@@ -8,6 +8,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+const SET_SHADOW_BLUR: bool = true;
+
 use arrayvec::ArrayVec;
 use euclid::default::Size2D;
 use font_kit::handle::Handle;
@@ -644,7 +646,9 @@ fn draw_color_wheel(context: &mut CanvasRenderingContext2D,
     context.rotate(hue);
 
     // Draw marker.
-    context.set_shadow_blur(4.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(4.0 * hidpi_factor);
+    }
     context.set_shadow_color(rgbu(0, 0, 0));
     context.set_shadow_offset(vec2f(0.0, 0.0));
     context.set_stroke_style(rgbau(255, 255, 255, 192));
@@ -832,7 +836,9 @@ fn draw_window(context: &mut CanvasRenderingContext2D,
 
     // Draw window with shadow.
     context.set_fill_style(rgbau(28, 30, 34, 160));
-    context.set_shadow_blur(10.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(10.0 * hidpi_factor);
+    }
     context.set_shadow_offset(vec2f(0.0, 2.0));
     context.set_shadow_color(rgbau(0, 0, 0, 128));
     context.fill_path(create_rounded_rect_path(rect, CORNER_RADIUS), FillRule::Winding);
@@ -859,7 +865,9 @@ fn draw_window(context: &mut CanvasRenderingContext2D,
     context.set_text_align(TextAlign::Center);
     context.set_text_baseline(TextBaseline::Middle);
     context.set_fill_style(rgbau(220, 220, 220, 160));
-    context.set_shadow_blur(2.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(2.0 * hidpi_factor);
+    }
     context.set_shadow_offset(vec2f(0.0, 1.0));
     context.set_shadow_color(rgbu(0, 0, 0));
     context.fill_text(title, rect.origin() + vec2f(rect.width() * 0.5, 16.0));
@@ -879,7 +887,9 @@ fn draw_search_box(context: &mut CanvasRenderingContext2D,
     context.save();
     context.clip_path(path, FillRule::Winding);
     let shadow_path = create_rounded_rect_path(rect + vec2f(0.0, 1.5), corner_radius);
-    context.set_shadow_blur(5.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(5.0 * hidpi_factor);
+    }
     context.set_shadow_offset(vec2f(0.0, 0.0));
     context.set_shadow_color(rgbau(0, 0, 0, 92));
     context.set_stroke_style(rgbau(0, 0, 0, 92));
@@ -963,7 +973,9 @@ fn draw_edit_box(context: &mut CanvasRenderingContext2D, rect: RectF, hidpi_fact
     context.fill_path(path.clone(), FillRule::Winding);
     context.clip_path(path.clone(), FillRule::Winding);
     context.set_line_width(1.0);
-    context.set_shadow_blur(2.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(2.0 * hidpi_factor);
+    }
     context.set_shadow_color(rgbau(32, 32, 32, 92));
     context.set_shadow_offset(vec2f(0.0, 1.0));
     context.set_stroke_style(rgbau(32, 32, 32, 92));
@@ -1035,7 +1047,9 @@ fn draw_check_box(context: &mut CanvasRenderingContext2D,
     context.set_line_width(1.0);
     context.set_stroke_style(rgbau(0, 0, 0, 92));
     context.set_shadow_color(rgbau(0, 0, 0, 92));
-    context.set_shadow_blur(1.5 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(1.5 * hidpi_factor);
+    }
     context.set_shadow_offset(vec2f(0.0, 0.0));
     let shadow_path = create_rounded_rect_path(check_box_rect + vec2f(0.0, 1.0), CORNER_RADIUS);
     context.stroke_path(shadow_path);
@@ -1096,7 +1110,9 @@ fn draw_button(context: &mut CanvasRenderingContext2D,
     context.set_text_baseline(TextBaseline::Middle);
     context.set_shadow_color(rgbau(0, 0, 0, 160));
     context.set_shadow_offset(vec2f(0.0, -1.0));
-    context.set_shadow_blur(0.0);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(0.0);
+    }
     context.set_fill_style(rgbau(255, 255, 255, 160));
     context.fill_text(text, text_origin);
     context.set_shadow_color(ColorU::transparent_black());
@@ -1115,7 +1131,9 @@ fn draw_slider(context: &mut CanvasRenderingContext2D,
     let track_rect = RectF::new(vec2f(rect.origin_x(), center_y - 2.0), vec2f(rect.width(), 4.0));
     let track_path = create_rounded_rect_path(track_rect, 2.0);
     context.clip_path(track_path.clone(), FillRule::Winding);
-    context.set_shadow_blur(2.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(2.0 * hidpi_factor);
+    }
     context.set_shadow_color(rgbau(0, 0, 0, 32));
     context.set_shadow_offset(vec2f(0.0, 1.0));
     context.set_fill_style(rgbau(0, 0, 0, 32));
@@ -1132,7 +1150,9 @@ fn draw_slider(context: &mut CanvasRenderingContext2D,
     let mut path = Path2D::new();
     path.ellipse(knob_position, knob_radius - 1.0, 0.0, 0.0, PI_2);
     context.set_fill_style(rgbu(40, 43, 48));
-    context.set_shadow_blur(6.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(6.0 * hidpi_factor);
+    }
     context.set_shadow_color(rgbau(0, 0, 0, 128));
     context.set_shadow_offset(vec2f(0.0, 1.0));
     context.fill_path(path.clone(), FillRule::Winding);
@@ -1174,7 +1194,9 @@ fn draw_thumbnails(context: &mut CanvasRenderingContext2D,
     path.line_to(rect.origin() + vec2f(1.0, ARROW_Y_POSITION - 11.0));
     path.line_to(rect.origin() + vec2f(1.0, ARROW_Y_POSITION + 11.0));
     context.set_fill_style(rgbu(200, 200, 200));
-    context.set_shadow_blur(20.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(20.0 * hidpi_factor);
+    }
     context.set_shadow_offset(vec2f(0.0, 4.0));
     context.set_shadow_color(rgbau(0, 0, 0, 64));
     context.fill_path(path, FillRule::Winding);
@@ -1196,7 +1218,9 @@ fn draw_thumbnails(context: &mut CanvasRenderingContext2D,
         // Draw shadow.
         let shadow_path = create_rounded_rect_path(image_rect.dilate(1.0) + vec2f(0.0, 1.0), 5.0);
         context.set_fill_style(rgbu(200, 200, 200));
-        context.set_shadow_blur(3.0 * hidpi_factor);
+        if SET_SHADOW_BLUR {
+            context.set_shadow_blur(3.0 * hidpi_factor);
+        }
         context.set_shadow_offset(vec2f(0.0, 0.0));
         context.set_shadow_color(rgbau(0, 0, 0, 255));
         context.fill_path(shadow_path, FillRule::Winding);
@@ -1257,7 +1281,9 @@ fn draw_thumbnails(context: &mut CanvasRenderingContext2D,
     context.set_stroke_style(rgbau(0, 0, 0, 92));
     context.set_shadow_offset(vec2f(0.0, 0.0));
     context.set_shadow_color(rgbau(0, 0, 0, 92));
-    context.set_shadow_blur(4.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(4.0 * hidpi_factor);
+    }
     let shadow_path = create_rounded_rect_path(scroll_bar_rect + vec2f(0.0, 1.0), CORNER_RADIUS);
     context.stroke_path(shadow_path);
     context.set_shadow_color(rgbau(0, 0, 0, 0));
@@ -1273,7 +1299,9 @@ fn draw_thumbnails(context: &mut CanvasRenderingContext2D,
     context.set_stroke_style(rgbu(128, 128, 128));
     context.set_line_width(1.0);
     let shadow_path = create_rounded_rect_path(knob_rect, 3.0);
-    context.set_shadow_blur(2.0 * hidpi_factor);
+    if SET_SHADOW_BLUR {
+        context.set_shadow_blur(2.0 * hidpi_factor);
+    }
     context.set_shadow_color(rgbu(128, 128, 128));
     context.set_shadow_offset(vec2f(0.0, 0.0));
     context.stroke_path(shadow_path);
