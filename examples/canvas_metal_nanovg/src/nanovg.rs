@@ -76,12 +76,12 @@ the men who came to the aid of the party. 🎉";
 static HOVER_TEXT: &'static str = "Hover your mouse over the text to see the calculated caret \
 position.";
 
-fn render_demo(context: &mut CanvasRenderingContext2D,
+pub fn render_demo(context: &mut CanvasRenderingContext2D,
                mouse_position: Vector2F,
                window_size: Vector2F,
                time: f32,
-               hidpi_factor: f32,
-               data: &DemoData) {
+               hidpi_factor: f32) {
+            //    data: &DemoData) {
     draw_eyes(context,
               RectF::new(vec2f(window_size.x() - 250.0, 50.0), vec2f(150.0, 100.0)),
               mouse_position,
@@ -160,12 +160,12 @@ fn render_demo(context: &mut CanvasRenderingContext2D,
                 rgbau(0, 0, 0, 0));
 
     // Draw thumbnails.
-    draw_thumbnails(context,
-                    RectF::new(vec2f(365.0, popup_position.y() - 30.0), vec2f(160.0, 300.0)),
-                    time,
-                    hidpi_factor,
-                    12,
-                    &data.image);
+    // draw_thumbnails(context,
+    //                 RectF::new(vec2f(365.0, popup_position.y() - 30.0), vec2f(160.0, 300.0)),
+    //                 time,
+    //                 hidpi_factor,
+    //                 12,
+    //                 &data.image);
 
     context.restore();
 }

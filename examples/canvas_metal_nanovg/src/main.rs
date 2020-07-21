@@ -12,7 +12,7 @@ use foreign_types::ForeignTypeRef;
 use metal::{CAMetalLayer, CoreAnimationLayerRef};
 use pathfinder_canvas::{Canvas, CanvasFontContext, Path2D};
 use pathfinder_color::ColorF;
-use pathfinder_geometry::vector::{vec2f, vec2i};
+use pathfinder_geometry::vector::{vec2f, Vector2F, vec2i};
 use pathfinder_geometry::rect::RectF;
 use pathfinder_metal::MetalDevice;
 use pathfinder_renderer::concurrent::rayon::RayonExecutor;
@@ -25,6 +25,14 @@ use sdl2::event::Event;
 use sdl2::hint;
 use sdl2::keyboard::Keycode;
 use sdl2_sys::SDL_RenderGetMetalLayer;
+use std::sync::Arc;
+use std::time::Instant;
+
+use pathfinder_resources::ResourceLoader;
+use pathfinder_resources::fs::FilesystemResourceLoader;
+use font_kit::handle::Handle;
+use font_kit::sources::mem::MemSource;
+
 
 mod nanovg;
 pub use nanovg::*;
@@ -36,7 +44,10 @@ fn main() {
     let video = sdl_context.video().unwrap();
 
     // Open a window.
-    let window_size = vec2i(640, 480);
+    let width = 1024;
+    let height = width * 3 / 4;
+
+    let window_size = vec2i(width, height);
     let window = video.window("Minimal example", window_size.x() as u32, window_size.y() as u32)
                       .opengl()
                       .build()
@@ -60,11 +71,26 @@ fn main() {
         background_color: Some(ColorF::white()),
         ..RendererOptions::default()
     };
+
+    // Load demo data.
+    let resources = FilesystemResourceLoader::locate();
+    let font_data = vec![
+        Handle::from_memory(Arc::new(resources.slurp("fonts/Roboto-Regular.ttf").unwrap()), 0),
+        Handle::from_memory(Arc::new(resources.slurp("fonts/Roboto-Bold.ttf").unwrap()), 0),
+        Handle::from_memory(Arc::new(resources.slurp("fonts/NotoEmoji-Regular.ttf").unwrap()), 0),
+    ];
+    // let demo_data = DemoData::load(&resources);
+
     let mut renderer = Renderer::new(device, &EmbeddedResourceLoader, mode, options);
+    // Initialize font state.
+    let font_source = Arc::new(MemSource::from_fonts(font_data.into_iter()).unwrap());
+    let font_context = CanvasFontContext::new(font_source.clone());
+
 
     // Make a canvas. We're going to draw a house.
     let canvas = Canvas::new(window_size.to_f32());
-    let mut canvas = canvas.get_context_2d(CanvasFontContext::from_system_source());
+    let mut canvas = canvas.get_context_2d(font_context.clone());
+
 
     // Set line width.
     canvas.set_line_width(10.0);
@@ -82,6 +108,18 @@ fn main() {
     path.line_to(vec2f(250.0, 140.0));
     path.close_path();
     canvas.stroke_path(path);
+
+    let mut mouse_position = Vector2F::zero();
+    let start_time = Instant::now();
+    let frame_start_time = Instant::now();
+    let frame_start_elapsed_time = (frame_start_time - start_time).as_secs_f32();
+    let hidpi_factor = 1;
+
+    render_demo(&mut canvas,
+                mouse_position,
+                vec2f(width as f32, height as f32),
+                frame_start_elapsed_time,
+                hidpi_factor as f32);
 
     // Render the canvas to screen.
     let mut scene = SceneProxy::from_scene(canvas.into_canvas().into_scene(),
