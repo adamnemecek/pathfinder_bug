@@ -10,6 +10,7 @@ members = [
     "demo/native",
     "examples/canvas_glutin_minimal",
     "examples/canvas_metal_minimal",
+    "examples/canvas_metal_nanovg",
     "examples/canvas_minimal",
     "examples/canvas_moire",
     "examples/canvas_nanovg",

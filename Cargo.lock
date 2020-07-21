@@ -271,6 +271,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "canvas_metal_nanovg"
+version = "0.1.0"
+dependencies = [
+ "arrayvec",
+ "euclid",
+ "font-kit",
+ "foreign-types",
+ "gl",
+ "image",
+ "metal 0.18.0",
+ "objc",
+ "pathfinder_canvas",
+ "pathfinder_color",
+ "pathfinder_content",
+ "pathfinder_geometry",
+ "pathfinder_gl",
+ "pathfinder_gpu",
+ "pathfinder_metal",
+ "pathfinder_renderer",
+ "pathfinder_resources",
+ "pathfinder_simd",
+ "sdl2",
+ "sdl2-sys",
+]
+
+[[package]]
 name = "canvas_minimal"
 version = "0.1.0"
 dependencies = [
