@@ -15,7 +15,7 @@ arrayvec = "0.5"
 font-kit = "0.6"
 
 [dependencies.image]
-version = "0.23"
+version = "0.24"
 default-features = false
 features = ["png"]
 
